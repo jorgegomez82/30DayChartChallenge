@@ -1,0 +1,55 @@
+---
+title: "Estudio de diversidad de especies plantadas"
+format: pdf
+editor: visual
+---
+
+## Neo
+
+El dataset contiene información sobre las inscripciones de plantaciones forestales en el Registro Nacional de Plantaciones, en cumplimiento de la normativa forestal peruana. Cada registro representa una inscripción de plantación por especie, realizada por un titular (persona natural o jurídica) y está asociado a un número de certificado. Además, proporciona detalles sobre el tipo de documento del titular, el régimen de tenencia, la superficie de la plantación, el período de inscripción, la finalidad de la plantación y la fecha de corte de la información. Fuente: https://www.datosabiertos.gob.pe/dataset/registro-nacional-de-plantaciones-forestales-por-especies
+
+## ¿Cual es mi objetivo?
+
+El objetivo central de este análisis se enfoca en comprender la diversidad de especies plantadas en las inscripciones de plantaciones forestales. Buscamos identificar patrones de plantación y especies prioritarias, con el fin de orientar estrategias de conservación y manejo sostenible de los recursos forestales.
+
+## ¿Cuales son las espectativas de la audiencia?
+
+Nuestra audiencia espera comprender la importancia de conservar la biodiversidad forestal, identificar oportunidades de mejora en la gestión forestal y contar con datos relevantes en tiempo real para la toma de decisiones informada en la planificación y gestión ambiental. Esta aproximación puede proporcionar una visión más holística y práctica sobre la gestión y conservación de los recursos forestales, lo cual puede ser considerado como una interpretación creativa del desafío NEO.
+
+## Grafica
+
+```{python}
+#| echo: false
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Cargar los datos desde un archivo CSV
+data = pd.read_csv('DataSetPlantaciones.csv', sep=';', encoding='latin1')
+
+# Contar la frecuencia de cada especie
+especies_frecuencia = data['ESPECIE'].value_counts()
+
+# Seleccionar las 10 especies más comunes
+top_10_especies = especies_frecuencia.head(10)
+
+# Crear el gráfico de barras
+plt.figure(figsize=(10, 6))
+top_10_especies.plot(kind='bar', color='skyblue')
+plt.title('Las 10 Especies de árboles más Comunes Plantadas segun la normativa forestal peruana')
+plt.xlabel('Especie')
+plt.ylabel('Frecuencia')
+plt.xticks(rotation=45, ha='right')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+# Establecer el límite máximo en el eje y
+plt.ylim(0, 3000)
+
+# Agregar etiquetas con la cantidad de especies plantadas
+for index, value in enumerate(top_10_especies):
+    plt.text(index, value + 1, str(value), ha='center', va='bottom', fontsize=9)
+
+plt.tight_layout()
+plt.show()
+
+```

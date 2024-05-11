@@ -1,0 +1,59 @@
+---
+title: "Physicals"
+format: pdf
+editor: visual
+---
+
+## Physicals
+
+El dataset contiene información sobre los jugadores que participaron en la Copa Mundial de la FIFA 2022 en Qatar, incluyendo detalles como el nombre del jugador, la edad, la fecha de nacimiento, la altura, el peso, la nacionalidad y otras características relacionadas con el rendimiento en el juego.
+
+## ¿Cual es mi objetivo?
+
+El objetivo es analizar las alturas de los jugadores que participaron en la Copa Mundial de la FIFA 2022 y entender cómo se distribuyen estas alturas en la población de jugadores. Se busca identificar si hay alguna tendencia o patrón en las alturas de los jugadores en relación con su nacionalidad, posición en el campo u otras características.
+
+## ¿Cuales son las espectativas de la audiencia?
+
+La audiencia espera obtener una visión clara y detallada de las alturas de los jugadores que participaron en la Copa Mundial de la FIFA 2022, así como comprender cómo estas alturas se distribuyen entre los diferentes equipos y posiciones en el campo. También esperan insights sobre cualquier patrón interesante o tendencia en relación con las alturas de los jugadores.
+
+## Grafica
+
+```{python}
+#| echo: false
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Cargar los datos desde el archivo CSV
+df = pd.read_csv('Revised_Players22.csv')
+
+# Tomar solo los primeros 10 jugadores
+df = df.head(10)
+
+# Seleccionar las columnas necesarias
+jugadores = df['short_name']
+alturas = df['height_cm']
+
+# Generar una paleta de colores única para cada jugador
+num_jugadores = len(jugadores)
+colormap = plt.cm.get_cmap('tab10', num_jugadores)  # 'tab10' es un mapa de colores predefinido
+colores = [colormap(i) for i in range(num_jugadores)]
+
+# Graficar
+plt.figure(figsize=(10, 6))
+bars = plt.bar(jugadores, alturas, color=colores)
+plt.title('Alturas de los jugadores en la World Cup 2022 - Qatar')
+plt.xlabel('Jugador')
+plt.ylabel('Altura (cm)')
+plt.xticks(rotation=45, ha='right')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+# Agregar etiquetas dentro de las barras
+for bar, altura in zip(bars, alturas):
+    plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), str(altura), ha='center', va='bottom')
+
+# Mostrar la gráfica
+plt.tight_layout()
+plt.show()
+
+```

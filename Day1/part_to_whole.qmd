@@ -1,0 +1,63 @@
+---
+title: "Usos de los cajeros ciudadanos en la ciudad de Gijón el 2022"
+format: pdf
+editor: visual
+---
+
+## Part-to-whole
+
+En este conjunto de datos se planea analizar el uso y posterior relevancia de las actividades en los cajeros ciudadanos en la ciudad de Gijón-España, por lo que hemos definido lo siguiente:
+
+### Cual es mi objetivo?
+
+Analizar el uso de los cajeros ciudadanos en la ciudad de Gijón busca mejorar la experiencia del usuario y optimizar los servicios financieros. Al comprender qué servicios son más demandados y cómo se distribuye el uso de los cajeros, las entidades financieras pueden adaptar estrategias para satisfacer mejor las necesidades de los clientes, mejorar la accesibilidad y eficiencia de los servicios, y planificar de manera más efectiva para el futuro. En última instancia, esto beneficia tanto a las entidades financieras como a las personas al proporcionar un acceso más conveniente y personalizado a los servicios financieros en la comunidad.
+
+Fuente: https://datos.gob.es/es/catalogo/l01330241-usos-de-los-cajeros-ciudadanos-en-el-2022
+
+## Mensaje
+
+### Cuales son las espectativas de la audiencia?
+
+La audiencia al visualizar la gráfica podría esperar obtener una comprensión clara y concisa del uso de los cajeros ciudadanos en Gijón. Esperarían ver patrones y tendencias que les permitan identificar qué servicios son más populares, y si existen diferencias significativas entre ubicaciones. Además, podrían buscar insights que les ayuden a entender mejor las necesidades y preferencias de los usuarios finales, así como posibles áreas de mejora en la prestación de servicios financieros en la región.
+
+## Grafica
+
+```{python}
+#| echo: false
+
+# Importar las bibliotecas necesarias
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Leer el archivo CSV
+df = pd.read_csv('943.csv', encoding='latin1')
+
+# Calcular el porcentaje total de cada servicio
+total_usos = df['USOS'].sum()
+
+# Obtener los 5 servicios más usados
+top_10 = df.nlargest(5, 'USOS')
+
+# Calcular el porcentaje total de los 10 servicios más usados
+top_10['PORCENTAJE_TOTAL'] = (top_10['USOS'] / total_usos) * 100
+
+# Crear el gráfico circular tipo donut con labels afuera y porcentaje adentro
+fig, ax = plt.subplots(figsize=(10, 6))
+wedges, texts, autotexts = ax.pie(top_10['PORCENTAJE_TOTAL'], labels=top_10['SERVICIO'], autopct='%1.1f%%', startangle=90, wedgeprops=dict(width=0.42), pctdistance=0.85)
+
+# Ajustar el tamaño de fuente y color para los porcentajes de uso
+for autotext in autotexts:
+    autotext.set_fontsize(12)
+    autotext.set_color('white')
+
+plt.title('Uso de servicios en los cajeros de la ciudad de Gijón - España (2022)')
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+# Mostrar el gráfico en una nueva ventana
+plt.show()
+
+```
+
+```         
+Figura 1
+```
